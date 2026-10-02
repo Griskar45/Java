@@ -122,4 +122,14 @@ public abstract class CommunicationDevice {
 
     }
     public abstract void sendMessage(String contact, String message);
+
+    @Override
+    public String toString() {
+        return "ID: " + id +
+                ", тип: " + getClass().getSimpleName() +
+                ", производитель: " + manufacturer +
+                ", модель: " + model +
+                ", включено: " + turnedOn +
+                ", подключено: " + connected;
+    }
 }
