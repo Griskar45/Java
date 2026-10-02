@@ -1,6 +1,12 @@
 public class Smartphone extends CommunicationDevice {
-    public Smartphone(String manufacturer, String model){
+    private int ram;
+    private double screenSize;
+    private double cameraMegaPixels;
+    public Smartphone(String manufacturer, String model, int ram, double screenSize, double cameraMegaPixels){
         super(manufacturer, model);
+        this.ram = ram;
+        this.screenSize = screenSize;
+        this.cameraMegaPixels = cameraMegaPixels;
     }
 
     @Override
@@ -21,4 +27,14 @@ public class Smartphone extends CommunicationDevice {
             System.out.println("Сообщение отправлено контакту" + contact);
         }
     }
+    public int getRam() {
+        return ram;
+    }
+    public double getScreenSize() {
+        return screenSize;
+    }
+    public double getCameraMegaPixels() {
+        return cameraMegaPixels;
+    }
+
 }
