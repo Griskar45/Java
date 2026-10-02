@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public abstract class CommunicationDevice {
     private int id;
@@ -83,6 +82,9 @@ public abstract class CommunicationDevice {
             connected = false;
             System.out.println("Устройство отключено");
         }
+    }
+    public boolean hasContact(String contact){
+        return contacts.contains(contact);
     }
     public void addContact(String contact){
         if (contact.isBlank()){
