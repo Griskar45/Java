@@ -2,6 +2,60 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+
+    public static int readInt(Scanner scanner, String text, int min, int max) {
+        while (true) {
+            System.out.print(text);
+            String input = scanner.nextLine().trim();
+
+            try {
+                int value = Integer.parseInt(input);
+
+                if (value < min || value > max) {
+                    System.out.println("Введите число от " + min + " до " + max);
+                } else {
+                    return value;
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Нужно ввести целое число");
+            }
+        }
+    }
+    public static double readDouble(Scanner scanner, String text, double min, double max) {
+        while (true) {
+            System.out.print(text);
+            String input = scanner.nextLine().trim().replace(',', '.');
+
+            try {
+                double value = Double.parseDouble(input);
+
+                if (value < min || value > max) {
+                    System.out.println("Введите число от " + min + " до " + max);
+                } else {
+                    return value;
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Нужно ввести число");
+            }
+        }
+    }
+    public static String readString(Scanner scanner, String text, int minLength, int maxLength) {
+        while (true) {
+            System.out.print(text);
+            String value = scanner.nextLine().trim();
+
+            if (value.length() < minLength) {
+                System.out.println("Слишком короткое значение");
+            } else if (value.length() > maxLength) {
+                System.out.println("Максимум символов: " + maxLength);
+            } else {
+                return value;
+            }
+        }
+    }
+
     public static void main(String[] args) {
 
         ArrayList<CommunicationDevice> devices = new ArrayList<>();
@@ -21,9 +75,8 @@ public class Main {
             System.out.println("4. Изменить устройство");
             System.out.println("5. Работа с устройством");
             System.out.println("0. Выход");
-            System.out.print("Выберите пункт: ");
 
-            choice = Integer.parseInt(scanner.nextLine());
+            choice = readInt(scanner, "Выберите пункт: ", 0, 5);
 
             switch (choice) {
 
@@ -42,58 +95,45 @@ public class Main {
                     System.out.println("1. Смартфон");
                     System.out.println("2. Радио");
                     System.out.println("3. Спутниковый телефон");
-                    System.out.print("Тип устройства: ");
-                    int type = Integer.parseInt(scanner.nextLine());
+                    int type = readInt(scanner,"Тип устройства: ", 1,3);
 
-                    System.out.print("Производитель: ");
-                    String manufacturer = scanner.nextLine();
-
-                    System.out.print("Модель: ");
-                    String model = scanner.nextLine();
+                    String manufacturer = readString(scanner, "Производитель: ", 1, 30);
+                    String model = readString(scanner, "Модель: ", 1, 30);
 
                     if (type == 1) {
-                        System.out.print("RAM: ");
-                        int ram = Integer.parseInt(scanner.nextLine());
+                        int ram = readInt(scanner, "RAM: ", 1,128);
 
-                        System.out.print("Размер экрана: ");
-                        double screenSize = Double.parseDouble(scanner.nextLine());
 
-                        System.out.print("Мегапиксели камеры: ");
-                        double cameraMegaPixels = Double.parseDouble(scanner.nextLine());
-
-                        System.out.print("Заряд батареи: ");
-                        int batteryLevel = Integer.parseInt(scanner.nextLine());
+                        double screenSize = readDouble(scanner, "Размер экрана (1-20): ", 1, 20);
+                        double cameraMegaPixels = readDouble(scanner, "Мегапиксели камеры (1-500): ", 1, 500);
+                        int batteryLevel = readInt(scanner, "Заряд батареи: ", 1,100);
 
                         devices.add(new Smartphone(manufacturer, model, ram, screenSize, cameraMegaPixels, batteryLevel));
                         System.out.println("Смартфон добавлен");
                     }
 
                     else if (type == 2) {
-                        System.out.print("Частота: ");
-                        double frequency = Double.parseDouble(scanner.nextLine());
 
-                        System.out.print("Диапазон: ");
-                        String band = scanner.nextLine();
+                        double frequency = readDouble(scanner, "Частота (0.1-1000 МГц): ", 0.1, 1000);
 
-                        System.out.print("Дальность: ");
-                        int range = Integer.parseInt(scanner.nextLine());
+                        String band = readString(scanner, "Диапазон: ", 1, 15);
 
-                        System.out.print("Громкость: ");
-                        int volume = Integer.parseInt(scanner.nextLine());
+                        int range = readInt(scanner, "Дальность: ", 0, 1_000_000_000 );
+
+                        int volume = readInt(scanner, "Громкость: ", 1,100);
 
                         devices.add(new Radio(manufacturer, model, frequency, band, range, volume));
                         System.out.println("Радио добавлено");
                     }
 
                     else if (type == 3) {
-                        System.out.print("Название спутника: ");
-                        String satelliteName = scanner.nextLine();
 
-                        System.out.print("Уровень сигнала: ");
-                        int signalStrength = Integer.parseInt(scanner.nextLine());
+                        String satelliteName = readString(scanner, "Название спутника: ", 1, 32);
 
-                        System.out.print("Заряд батареи: ");
-                        int batteryLevel = Integer.parseInt(scanner.nextLine());
+
+                        int signalStrength = readInt(scanner,"Уровень сигнала(1-100): ",1,100);
+
+                        int batteryLevel = readInt(scanner,"Заряд батареи(1-100): ",1,100);
 
                         devices.add(new SatellitePhone(manufacturer, model, satelliteName, signalStrength, batteryLevel));
                         System.out.println("Спутниковый телефон добавлен");
@@ -107,8 +147,8 @@ public class Main {
                 }
 
                 case 3: {
-                    System.out.print("Введите ID устройства: ");
-                    int deleteId = Integer.parseInt(scanner.nextLine());
+
+                    int deleteId = readInt(scanner, "Введите ID устройства: ",1, devices.size());
 
                     boolean removed = devices.removeIf(device -> device.getId() == deleteId);
 
@@ -123,7 +163,7 @@ public class Main {
 
                 case 4: {
                     System.out.print("Введите ID устройства: ");
-                    int editId = Integer.parseInt(scanner.nextLine());
+                    int editId = readInt(scanner, "Введите ID устройства: ",1, devices.size());;
 
                     CommunicationDevice foundDevice = null;
 
@@ -139,11 +179,9 @@ public class Main {
                         break;
                     }
 
-                    System.out.print("Новый производитель: ");
-                    String manufacturer = scanner.nextLine();
+                    String manufacturer = readString(scanner, "Новый производитель: ", 1, 32 );
 
-                    System.out.print("Новая модель: ");
-                    String model = scanner.nextLine();
+                    String model = readString(scanner, "Новая модель: ", 1, 32 );
 
                     foundDevice.setManufacturer(manufacturer);
                     foundDevice.setModel(model);
@@ -153,8 +191,7 @@ public class Main {
                 }
 
                 case 5: {
-                    System.out.print("Введите ID устройства: ");
-                    int id = Integer.parseInt(scanner.nextLine());
+                    int id = readInt(scanner, "Введите ID устройства: ",1, devices.size());;
 
                     CommunicationDevice device = null;
 
@@ -206,7 +243,7 @@ public class Main {
                         System.out.println("0. Назад");
                         System.out.print("Выберите действие: ");
 
-                        action = Integer.parseInt(scanner.nextLine());
+                        action = readInt(scanner, "Выберите действие: ",0, 12);
 
                         switch (action) {
 
@@ -227,15 +264,13 @@ public class Main {
                                 break;
 
                             case 5: {
-                                System.out.print("Введите контакт: ");
-                                String contact = scanner.nextLine();
+                                String contact = readString(scanner, "Введите контакт: ", 1,32);
                                 device.addContact(contact);
                                 break;
                             }
 
                             case 6: {
-                                System.out.print("Введите контакт: ");
-                                String contact = scanner.nextLine();
+                                String contact = readString(scanner, "Введите контакт: ", 1,32);
                                 device.removeContact(contact);
                                 break;
                             }
@@ -245,11 +280,10 @@ public class Main {
                                 break;
 
                             case 8: {
-                                System.out.print("Контакт: ");
-                                String contact = scanner.nextLine();
+                                String contact = readString(scanner, "Контакт: ", 1,32);
 
-                                System.out.print("Сообщение: ");
-                                String message = scanner.nextLine();
+
+                                String message = readString(scanner, "Сообщение: ", 1,32);
 
                                 device.sendMessage(contact, message);
                                 break;
@@ -316,8 +350,8 @@ public class Main {
                                 if (device instanceof Radio) {
                                     Radio radio = (Radio) device;
 
-                                    System.out.print("Новая частота: ");
-                                    double frequency = Double.parseDouble(scanner.nextLine());
+
+                                    double frequency = readDouble(scanner,"Новая частота: ",1,1000);
 
                                     radio.tuneFrequency(frequency);
                                 }
