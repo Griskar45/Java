@@ -56,6 +56,31 @@ public class Main {
         }
     }
 
+    private static void showDeviceDetails(CommunicationDevice device) {
+        System.out.println("Производитель: " + device.getManufacturer());
+        System.out.println("Модель: " + device.getModel());
+
+        if (device instanceof Smartphone) {
+            Smartphone phone = (Smartphone) device;
+            System.out.println("RAM: " + phone.getRam() + " ГБ");
+            System.out.println("Размер экрана: " + phone.getScreenSize() + " дюйма");
+            System.out.println("Камера: " + phone.getCameraMegaPixels() + " Мп");
+            System.out.println("Заряд батареи: " + phone.getBatteryLevel() + "%");
+        } else if (device instanceof Radio) {
+            Radio radio = (Radio) device;
+            System.out.println("Частота: " + radio.getFrequency() + " МГц");
+            System.out.println("Диапазон: " + radio.getBand());
+            System.out.println("Дальность: " + radio.getRange());
+            System.out.println("Громкость: " + radio.getVolume());
+        } else if (device instanceof SatellitePhone) {
+            SatellitePhone phone = (SatellitePhone) device;
+            System.out.println("Спутник: " + phone.getSatelliteName());
+            System.out.println("Уровень сигнала: " + phone.getSignalStrength() + "%");
+            System.out.println("Заряд батареи: " + phone.getBatteryLevel() + "%");
+            System.out.println("Режим SOS: " + (phone.isEmergencyMode() ? "включен" : "выключен"));
+        }
+    }
+
     public static void main(String[] args) {
 
         ArrayList<CommunicationDevice> devices = new ArrayList<>();
@@ -86,6 +111,8 @@ public class Main {
                     } else {
                         for (CommunicationDevice device : devices) {
                             System.out.println(device);
+                            showDeviceDetails(device);
+                            System.out.println();
                         }
                     }
                     break;
@@ -211,6 +238,7 @@ public class Main {
 
                     do {
                         System.out.println("\nУстройство: " + device);
+                        showDeviceDetails(device);
                         System.out.println("1. Включить");
                         System.out.println("2. Выключить");
                         System.out.println("3. Подключиться к сети");
