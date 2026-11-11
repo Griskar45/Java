@@ -98,13 +98,43 @@ public class DeviceFileReader {
         return null;
     }
     private String getString(Map<String, String> data, String key, String defaultVal) {
-
+        if (data.containsKey(key)) {
+            successfulProps++;
+            return data.get(key);
+        } else {
+            missingProps++;
+            return defaultVal;
+        }
     }
     private int getInt(Map<String, String> data, String key, int defaultVal) {
-
+        if (data.containsKey(key)) {
+            try {
+                int val = Integer.parseInt(data.get(key));
+                successfulProps++;
+                return val;
+            } catch (NumberFormatException e) {
+                missingProps++;
+                return defaultVal;
+            }
+        } else {
+            missingProps++;
+            return defaultVal;
+        }
     }
     private double getDouble(Map<String, String> data, String key, double defaultVal){
-
+        if (data.containsKey(key)) {
+            try {
+                double val = Double.parseDouble(data.get(key).replace(',', '.'));
+                successfulProps++;
+                return val;
+            } catch (NumberFormatException e) {
+                missingProps++;
+                return defaultVal;
+            }
+        } else {
+            missingProps++;
+            return defaultVal;
+        }
     }
     public int getTotalDevices() { return totalDevices; }
     public int getSuccessfulProps() { return successfulProps; }
