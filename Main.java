@@ -86,6 +86,9 @@ public class Main {
         ArrayList<CommunicationDevice> devices = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
 
+        DeviceFileReader fileReader = new DeviceFileReader();
+        String currentFileName = "devices.txt"; // Имя файла по умолчанию
+
         devices.add(new Smartphone("Samsung", "S24", 12, 6.2, 50, 100));
         devices.add(new Radio("Baofeng", "UV-5R", 145.5, "VHF", 10, 5));
         devices.add(new SatellitePhone("Iridium", "Extreme", "Iridium-1", 80, 90));
@@ -99,12 +102,13 @@ public class Main {
             System.out.println("3. Удалить устройство");
             System.out.println("4. Изменить устройство");
             System.out.println("5. Работа с устройством");
+            System.out.println("6. Прочитать устройства из файла (" + currentFileName + ")");
+            System.out.println("7. Изменить имя файла");
             System.out.println("0. Выход");
 
-            choice = readInt(scanner, "Выберите пункт: ", 0, 5);
+            choice = readInt(scanner, "Выберите пункт: ", 0, 7);
 
             switch (choice) {
-
                 case 1: {
                     if (devices.isEmpty()) {
                         System.out.println("Список устройств пуст");
@@ -401,6 +405,29 @@ public class Main {
 
                     } while (action != 0);
 
+                    break;
+                }
+                case 6 : {
+                    System.out.println("Чтение из файла: " + currentFileName);
+                    ArrayList<CommunicationDevice> loadedDevices = (ArrayList<CommunicationDevice>) fileReader.readFromFile(currentFileName);
+
+                    if (loadedDevices != null) {
+                        if (loadedDevices.isEmpty()) {
+                            System.out.println("В файле не найдено устройств.");
+                        } else {
+                            devices.addAll(loadedDevices);
+                            System.out.println("\nСтатистика чтения");
+                            System.out.println("Количество найденных объектов: " + fileReader.getTotalDevices());
+                            System.out.println("Успешно прочитано свойств: " + fileReader.getSuccessfulProps());
+                            System.out.println("Не найдено свойств: " + fileReader.getMissingProps());
+                            System.out.println("Объекты добавлены в общий список.");
+                        }
+                    }
+                    break;
+                }
+                case 7: {
+                    currentFileName = readString(scanner, "Введите новое имя файла (например, data.txt): ", 1, 100);
+                    System.out.println("Имя файла успешно изменено на: " + currentFileName);
                     break;
                 }
 
