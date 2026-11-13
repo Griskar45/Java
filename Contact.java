@@ -1,5 +1,7 @@
-public record Contact {
-    public Contact(String name, String phoneNumber) {
-        if (name == null || name.isBlank());
+public record Contact (String name) {
+    public Contact {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Нужно что-то ввести");
+        }
     }
 }

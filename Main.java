@@ -297,7 +297,7 @@ public class Main {
 
                             case 5: {
                                 String contact = readString(scanner, "Введите контакт: ", 1,32);
-                                device.addContact(contact);
+                                device.addContact(new Contact(contact)); 
                                 break;
                             }
 

@@ -1,10 +1,11 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class CommunicationDevice {
     private int id;
     private String manufacturer;
     private String model;
-    private ArrayList<String> contacts;
+    private List<Contact> contacts;
     private boolean connected;
     private static int nextId = 1;
     private boolean turnedOn;
@@ -13,7 +14,7 @@ public abstract class CommunicationDevice {
         this.manufacturer = manufacturer;
         id = nextId;
         nextId++;
-        contacts =new ArrayList<>();
+        List<Contact> contacts = new ArrayList<>();
         this.connected = false;
         this.turnedOn = false;
     }
@@ -86,11 +87,8 @@ public abstract class CommunicationDevice {
     public boolean hasContact(String contact){
         return contacts.contains(contact);
     }
-    public void addContact(String contact){
-        if (contact.isBlank()){
-            System.out.println("Строка пуста");
-        }
-        else if (contacts.contains(contact)){
+    public void addContact(Contact contact){
+        if (contacts.contains(contact)){
             System.out.println("Контакт уже существует");
         }
         else {
@@ -98,16 +96,14 @@ public abstract class CommunicationDevice {
             System.out.println("Контакт добавлен");
         }
     }
-    public void removeContact(String contact){
-        if (contact.isBlank()){
-            System.out.println("Строка пуста");
-        }
-        else if (contacts.contains(contact)){
-            contacts.remove(contact);
-            System.out.println("Контакт удален");
-        }
-        else {
-            System.out.println("Контакт не найден");
+
+    public void removeContact(String name){
+
+        boolean removed = contacts.removeIf(c -> c.name().equalsIgnoreCase(name));
+        if (removed) {
+            System.out.println("Контакт " + name + " удален.");
+        } else {
+            System.out.println("Контакт не найден.");
         }
     }
     public void showContacts(){
@@ -115,8 +111,8 @@ public abstract class CommunicationDevice {
             System.out.println("Список контактов пуст");
         }
         else {
-            for (int i=0; i < contacts.size(); i++){
-                System.out.println(contacts.get(i));
+            for (Contact c : contacts){
+                System.out.println(c.name() + " - " + c.phoneNumber());
             }
         }
 
