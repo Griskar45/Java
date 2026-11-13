@@ -1,6 +1,6 @@
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +11,7 @@ public class DeviceFileReader {
     private int successfulProps = 0;
     private int missingProps = 0;
 
-    public List<CommunicationDevice> readFromFile(String filename) {
+    public List<CommunicationDevice> readFromFile(Reader reader) {
         List<CommunicationDevice> devices = new ArrayList<>();
 
         //Сброс статы
@@ -19,7 +19,7 @@ public class DeviceFileReader {
         successfulProps = 0;
         missingProps = 0;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader br = new BufferedReader(reader)) {
             String line;
             Map<String, String> currentData = new HashMap<>();
             boolean inObject = false;

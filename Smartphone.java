@@ -12,7 +12,7 @@ public class Smartphone extends CommunicationDevice {
     }
 
     @Override
-    public void sendMessage(String contact, String message) {
+    public void sendMessage(Contact contact, String message) {
         if(!isTurnedOn()){
             System.out.println("Отправка невозможна, устройство выключено");
         }

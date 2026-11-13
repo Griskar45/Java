@@ -1,4 +1,8 @@
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -297,7 +301,7 @@ public class Main {
 
                             case 5: {
                                 String contact = readString(scanner, "Введите контакт: ", 1,32);
-                                device.addContact(new Contact(contact)); 
+                                device.addContact(new Contact(contact));
                                 break;
                             }
 
@@ -317,7 +321,7 @@ public class Main {
 
                                 String message = readString(scanner, "Сообщение: ", 1,32);
 
-                                device.sendMessage(contact, message);
+                                device.sendMessage(new Contact(contact), message);
                                 break;
                             }
 
@@ -409,19 +413,25 @@ public class Main {
                 }
                 case 6 : {
                     System.out.println("Чтение из файла: " + currentFileName);
-                    ArrayList<CommunicationDevice> loadedDevices = (ArrayList<CommunicationDevice>) fileReader.readFromFile(currentFileName);
+                    try(Reader reader = new FileReader(currentFileName)) {
 
-                    if (loadedDevices != null) {
-                        if (loadedDevices.isEmpty()) {
-                            System.out.println("В файле не найдено устройств.");
-                        } else {
-                            devices.addAll(loadedDevices);
-                            System.out.println("\nСтатистика чтения");
-                            System.out.println("Количество найденных объектов: " + fileReader.getTotalDevices());
-                            System.out.println("Успешно прочитано свойств: " + fileReader.getSuccessfulProps());
-                            System.out.println("Не найдено свойств: " + fileReader.getMissingProps());
-                            System.out.println("Объекты добавлены в общий список.");
+
+                        List<CommunicationDevice> loadedDevices = fileReader.readFromFile(reader);
+
+                        if (loadedDevices != null) {
+                            if (loadedDevices.isEmpty()) {
+                                System.out.println("В файле не найдено устройств.");
+                            } else {
+                                devices.addAll(loadedDevices);
+                                System.out.println("\nСтатистика чтения");
+                                System.out.println("Количество найденных объектов: " + fileReader.getTotalDevices());
+                                System.out.println("Успешно прочитано свойств: " + fileReader.getSuccessfulProps());
+                                System.out.println("Не найдено свойств: " + fileReader.getMissingProps());
+                                System.out.println("Объекты добавлены в общий список.");
+                            }
                         }
+                    } catch (IOException e){
+                        System.out.println("Не удалось открыть файл: " + e.getMessage());
                     }
                     break;
                 }

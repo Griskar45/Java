@@ -25,7 +25,7 @@ public class Radio extends CommunicationDevice {
     }
 
     @Override
-    public void sendMessage(String contact, String message) {
+    public void sendMessage(Contact contact, String message) {
         if (!isTurnedOn()) {
             System.out.println("Радио выключено. Отправка невозможна");
         } else if (!isConnected()) {

@@ -14,7 +14,7 @@ public abstract class CommunicationDevice {
         this.manufacturer = manufacturer;
         id = nextId;
         nextId++;
-        List<Contact> contacts = new ArrayList<>();
+        this.contacts = new ArrayList<>();
         this.connected = false;
         this.turnedOn = false;
     }
@@ -84,11 +84,11 @@ public abstract class CommunicationDevice {
             System.out.println("Устройство отключено");
         }
     }
-    public boolean hasContact(String contact){
+    public boolean hasContact(Contact contact){
         return contacts.contains(contact);
     }
     public void addContact(Contact contact){
-        if (contacts.contains(contact)){
+        if (hasContact(contact)){
             System.out.println("Контакт уже существует");
         }
         else {
@@ -112,20 +112,16 @@ public abstract class CommunicationDevice {
         }
         else {
             for (Contact c : contacts){
-                System.out.println(c.name() + " - " + c.phoneNumber());
+                System.out.println(c.name());
             }
         }
 
     }
-    public abstract void sendMessage(String contact, String message);
+    public abstract void sendMessage(Contact contact, String message);
 
     @Override
     public String toString() {
         return "ID: " + id +
-                ", тип: " + getClass().getSimpleName() +
-                ", производитель: " + manufacturer +
-                ", модель: " + model +
-                ", включено: " + turnedOn +
-                ", подключено: " + connected;
+                ", тип: " + getClass().getSimpleName() + ", включено: " + turnedOn + ", подключено: " + connected;
     }
 }
